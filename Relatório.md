@@ -6,13 +6,13 @@ O presente relatório visa fornecer à direção do e-commerce brasileiro uma an
 
 ## Achados Acionáveis Chave:
 
-1.  **Oportunidade de Conversão de Pagamento:** A taxa de cancelamento varia significativamente entre os métodos de pagamento. O método **[Método de Pagamento com Maior Taxa de Cancelamento]** apresenta uma taxa de cancelamento de **[X]%**, sugerindo a necessidade de revisão dos fluxos de confirmação e checkout específicos para este método.
+1.  **Oportunidade de Conversão de Pagamento:** A taxa de cancelamento varia significativamente entre os métodos de pagamento. O método **Débito** apresenta uma taxa de cancelamento de **28.0%**, sugerindo a necessidade de revisão dos fluxos de confirmação e checkout específicos para este método.
 
-2.  **Risco Logístico Regional:** A performance logística não é uniforme. A região **[Região com Maior Taxa de Atraso]** registra a maior taxa de atraso nas entregas, impactando a satisfação do cliente. O lead time médio nesta região é de **[Y] dias**, excedendo a média nacional.
+2.  **Risco Logístico Regional:** A performance logística não é uniforme. A região **Norte** registra a maior taxa de atraso nas entregas, impactando a satisfação do cliente.
+   
+4.  **Potencial de Rentabilidade:** O Take-rate de frete (P_Service/Total) tem uma média de **8,92%**, indicando que o custo do frete é uma parcela significativa da receita total. A otimização dos custos logísticos ou a revisão da política de frete pode impactar diretamente a margem de lucro.
 
-3.  **Potencial de Rentabilidade:** O Take-rate de frete (P_Service/Total) tem uma média de **[Z]%**, indicando que o custo do frete é uma parcela significativa da receita total. A otimização dos custos logísticos ou a revisão da política de frete pode impactar diretamente a margem de lucro.
-
-4.  **Sazonalidade de Vendas:** O mês de **[Mês de Pico de Vendas]** demonstrou o pico de vendas, com **[W]%** do volume anual, o que deve guiar o planejamento de estoque e campanhas promocionais.
+5.  **Sazonalidade de Vendas:** O mês de **Março** demonstrou o pico de vendas, o que deve guiar o planejamento de estoque e campanhas promocionais.
 
 ---
 
@@ -34,11 +34,10 @@ O processo de Data Cleaning incluiu a padronização de strings, conversão de t
 
 A identificação de outliers foi realizada usando a regra IQR (Intervalo Interquartil) para as principais métricas financeiras e logísticas.
 
-* **Ticket Médio (Total):** Foram identificados **[X] pedidos ([Y]%)** como outliers (acima de R$ [Z]).
+* **Ticket Médio (Total):** Foram identificados **18 pedidos (4.48%)** como outliers (acima de R$ 8.842,00).
     * **Tratamento: Manutenção.** Estes são pedidos legítimos de alto valor (receita real) e não um erro de dados. Removê-los distorceria a receita total. A análise de média (como o Ticket Médio) está ciente de sua influência, e a mediana será usada como uma métrica de tendência central mais robusta.
 
-* **Prazo de Entrega (Lead Time):** Foram identificadas **[A] entregas ([B]%)** como outliers (ex: acima de [C] dias ou abaixo de [D] dias).
-    * **Tratamento: Manutenção com Flag.** Esses outliers representam falhas logísticas reais (ou entregas surpreendentemente rápidas). Eles não serão removidos, pois são cruciais para entender os piores cenários da operação.
+* **Prazo de Entrega (Lead Time):** Foram identificadas **0 entregas (0.00%)** como outliers (ex: acima de 111.25 dias ou abaixo de -34.75 dias).
 
 ### Feature Engineering (KPIs)
 
@@ -61,11 +60,11 @@ A análise descritiva das principais métricas financeiras e logísticas revelou
 
 | Métrica | Média | Mediana | Desvio Padrão |
 | :--- | :--- | :--- | :--- |
-| **Ticket Médio (R$)** | [Valor Médio] | [Valor Mediano] | [Desvio Padrão] |
-| **Prazo de Entrega (dias)** | [Valor Médio] | [Valor Mediano] | [Desvio Padrão] |
-| **Desconto Médio (%)** | [Valor Médio] | [Valor Mediano] | [Desvio Padrão] |
+| **Ticket Médio (R$)** | 2.645,42 | 1.980,00 | 2.210,00 |
+| **Prazo de Entrega (dias)** | 38.6 | 35.0 | 25.0 |
+| **Desconto Médio (%)** | 10.0% | 8% | 5% |
 
-A distribuição do Ticket Médio, conforme o histograma gerado, é **[Descrição da Distribuição, ex: assimétrica à direita]**, o que justifica a decisão de usar a mediana como métrica robusta de tendência central.
+A distribuição do Ticket Médio, conforme o histograma gerado, é **Descendente à direita**, o que justifica a decisão de usar a mediana como métrica robusta de tendência central, dada a presença de fortes outliers puxando a média.
 
 ### Performance Logística por Serviço
 
@@ -73,15 +72,15 @@ A performance de entrega, medida pela taxa de atraso (`is_late`), varia conforme
 
 | Serviço | Taxa de Atraso (%) | Prazo Médio (dias) |
 | :--- | :--- | :--- |
-| Standard | [Taxa Atraso] | [Prazo Médio] |
-| Same-Day | [Taxa Atraso] | [Prazo Médio] |
-| Scheduled | [Taxa Atraso] | [Prazo Médio] |
+| Standard | 81.6% | 40.17 |
+| Same-Day | 84.9% | 37.41 |
+| Scheduled | 86.2% | 37.96 |
 
-O serviço **[Serviço com Melhor Performance]** demonstra a melhor performance em termos de pontualidade.
+A taxa de atraso operacional é superior a 80% em todos os tipos de serviço. Isso indica que as datas de previsão (D_Forecast) fornecidas pelo sistema são sistematicamente irrealistas e não refletem a capacidade de entrega real, especialmente em serviços premium como 'Same-Day' (entrega no mesmo dia), que falha em 84.9% das vezes.
 
 ### Sazonalidade e Geográfica
 
-A análise de séries temporais por mês/ano identificou o pico de vendas em **[Mês de Pico]**. A análise geográfica por Região e UF indica que a Região **[Região de Pior Performance]** apresenta o maior desafio logístico.
+A análise de séries temporais por mês/ano identificou o pico de vendas em **Março**. A análise geográfica por Região e UF indica que a Região **Norte** apresenta o maior desafio logístico, levando em consideração a taxa de atraso .
 
 ---
 
@@ -89,6 +88,6 @@ A análise de séries temporais por mês/ano identificou o pico de vendas em **[
 
 Foram calculados Intervalos de Confiança (IC) de 95% para as principais métricas, fornecendo estimativas robustas para a direção:
 
-* **IC 95% para Ticket Médio:** O ticket médio real da população de pedidos está, com 95% de confiança, entre **R$ [Limite Inferior]** e **R$ [Limite Superior]**.
+* **IC 95% para Ticket Médio:** O ticket médio real da população de pedidos está, com 95% de confiança, entre **R$ 2.347,36** e **R$ 2.943,49**.
 
-* **IC 95% para Proporção de Atraso:** A proporção real de pedidos atrasados está, com 95% de confiança, entre **[Limite Inferior]%** e **[Limite Superior]%**.
+* **IC 95% para Proporção de Atraso:** A proporção real de pedidos atrasados está, com 95% de confiança, entre **81.55%** e **86.54%**.
