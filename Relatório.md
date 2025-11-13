@@ -1,10 +1,10 @@
-## 📊 Relatório Analítico: Desempenho Operacional e Financeiro do E-commerce
+## Relatório Analítico: Desempenho Operacional e Financeiro do E-commerce
 
 ## Sumário Executivo
 
 O presente relatório visa fornecer à direção do e-commerce brasileiro uma análise estatística robusta sobre o desempenho operacional e financeiro. A análise exploratória e inferencial revelou achados acionáveis cruciais para a otimização de processos e aumento da rentabilidade.
 
-## 🎯 Achados Acionáveis Chave:
+## Achados Acionáveis Chave:
 
 1.  **Oportunidade de Conversão de Pagamento:** A taxa de cancelamento varia significativamente entre os métodos de pagamento. O método **[Método de Pagamento com Maior Taxa de Cancelamento]** apresenta uma taxa de cancelamento de **[X]%**, sugerindo a necessidade de revisão dos fluxos de confirmação e checkout específicos para este método.
 
@@ -16,7 +16,7 @@ O presente relatório visa fornecer à direção do e-commerce brasileiro uma an
 
 ---
 
-## 🛠️ Dados & Método
+## Dados & Método
 
 ### Fontes de Dados e Joins
 
@@ -53,7 +53,7 @@ As seguintes métricas de negócio foram criadas como features para a análise:
 
 ---
 
-## 📈 Análise Exploratória de Dados (EDA)
+## Análise Exploratória de Dados (EDA)
 
 ### Distribuição e Tendência Central
 
@@ -85,7 +85,7 @@ A análise de séries temporais por mês/ano identificou o pico de vendas em **[
 
 ---
 
-## 🔬 Inferência Estatística
+## Inferência Estatística
 
 Foram calculados Intervalos de Confiança (IC) de 95% para as principais métricas, fornecendo estimativas robustas para a direção:
 
