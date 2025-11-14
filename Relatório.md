@@ -37,7 +37,7 @@ A identificação de outliers foi realizada usando a regra IQR (Intervalo Interq
 * **Ticket Médio (Total):** Foram identificados **18 pedidos (4.48%)** como outliers (acima de R$ 8.842,00).
     * **Tratamento: Manutenção.** Estes são pedidos legítimos de alto valor (receita real) e não um erro de dados. Removê-los distorceria a receita total. A análise de média (como o Ticket Médio) está ciente de sua influência, e a mediana será usada como uma métrica de tendência central mais robusta.
 
-* **Prazo de Entrega (Lead Time):** Foram identificadas **0 entregas (0.00%)** como outliers (ex: acima de 111.25 dias ou abaixo de -34.75 dias).
+* **Prazo de Entrega (Lead Time):** Foram identificadas **0 entregas (0.00%)** como outliers (ex: acima de 111.25 dias).
 
 ### Feature Engineering (KPIs)
 
