@@ -632,3 +632,5 @@ for kpi, values in resultados_inferencia.items():
     print(f"  IC 95%: ({prefixo}{values['IC 95%'][0]:{fmt}}, {prefixo}{values['IC 95%'][1]:{fmt}})")
 
 
+
+# %%
