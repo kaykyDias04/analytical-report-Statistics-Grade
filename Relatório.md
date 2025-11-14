@@ -94,27 +94,27 @@ Foram calculados Intervalos de Confiança (IC) de 95% para as principais métric
 
 ## Gráficos 
 
-![Distribuição do Ticket Médio (Pedidos Confirmados)](image.png)
+![Distribuição do Ticket Médio (Pedidos Confirmados)](images/image.png)
 
 **Figura 1:** Histograma que mostra a concentração de pedidos de baixo valor e uma longa cauda de pedidos de alto valor. A distribuição é fortemente assimétrica à direita, indicando que a mediana é a métrica mais robusta para representar o valor típico do pedido, sendo menos sensível aos poucos pedidos de alto valor.
 
 
-![Distribuição do Prazo de Entrega (em dias)](image-1.png)
+![Distribuição do Prazo de Entrega (em dias)](images/image-1.png)
 
 **Figura 2:** Histograma que exibe a dispersão do tempo total de entrega (Lead Time), com picos em torno de 35-40 e 55-60 dias. A grande variabilidade no Lead Time (até 85 dias) sugere falta de padronização logística; é crucial reduzir o desvio padrão para aumentar a previsibilidade e a satisfação do cliente
 
 
-![Distribuição do Atraso (dias)](image-2.png)
+![Distribuição do Atraso (dias)](images/image-2.png)
 
 **Figura 3:** Gráfico de barras que, presumivelmente, mostra a contagem de pedidos por dias de atraso (0 a 5 dias). A uniformidade das contagens de atraso é incomum e pode indicar um problema na categorização ou na visualização dos dados de atraso, necessitando de uma investigação na fonte.
 
 
-![Receita Mensal (Pedidos Confirmados)](image-3.png)
+![Receita Mensal (Pedidos Confirmados)](images/image-3.png)
 
 **Figura 4:** Gráfico de linha que rastreia a Receita Total de pedidos confirmados ao longo das quinzenas (Fev-Mai 2025). O pico de receita ocorreu na quinzena de Março (2025-03); a gestão deve analisar as ações de marketing e estoque desse período para replicar o sucesso.
 
 
-![Taxa Média de Atraso por Tipo de Serviço](image-4.png)
+![Taxa Média de Atraso por Tipo de Serviço](images/image-4.png)
 
 **Figura 5:** Gráfico de barras comparando a taxa de atraso entre os serviços scheduled (86.2%), same-day (84.9%) e standard (81.6%). O serviço standard tem a melhor performance (menor atraso), enquanto o scheduled tem a pior; a operação do serviço agendado precisa de atenção urgente para entender a causa da alta taxa de falha.
 
@@ -124,16 +124,16 @@ Foram calculados Intervalos de Confiança (IC) de 95% para as principais métric
 **Figura 6:** Gráfico de barras que compara a taxa de atraso entre as regiões Norte (84.9%), Nordeste (84.7%), Sudeste (84.0%) e Sul (83.3%). A região Norte apresenta a maior taxa de atraso (84.9%), sendo o principal desafio logístico; a otimização da cadeia de suprimentos deve ser priorizada nesta região.
 
 
-![Contagem de Status de Pedido por Método de Pagamento](image-6.png)
+![Contagem de Status de Pedido por Método de Pagamento](images/image-6.png)
 
 **Figura 7:** Gráfico de barras agrupadas que mostra a contagem de pedidos por status (processando, em análise, cancelado, confirmado) para cada método de pagamento. O método débito tem a maior contagem de cancelamentos e a menor de confirmações, indicando a pior taxa de conversão e a maior perda de receita.
 
 
-![Taxa de Cancelamento por Método de Pagamento](image-7.png)
+![Taxa de Cancelamento por Método de Pagamento](images/image-7.png)
 
 **Figura 8:** Gráfico de barras que exibe a taxa de cancelamento (em %) para cada método de pagamento. O método débito tem a maior taxa de cancelamento (28.0%), confirmando que a principal oportunidade de conversão reside na otimização do fluxo de pagamento para este método.
 
 
-![Quantidade Média Vendida por Faixa de Desconto](image-8.png)
+![Quantidade Média Vendida por Faixa de Desconto](images/image-8.png)
 
 **Figura 9:** Gráfico de barras que compara a Quantidade Média de Itens Vendidos por Pedido em diferentes faixas de desconto. A faixa de 10.1% a 15% de desconto gera o maior volume médio de itens por pedido (2.58), sugerindo ser o ponto ideal de equilíbrio entre incentivo de vendas e rentabilidade.
