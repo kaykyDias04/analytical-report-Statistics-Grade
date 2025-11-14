@@ -122,6 +122,7 @@ if erros_data > 0:
 
 df_entregues = df_abt[(df_abt['Delivery_Status'].isin(['entregue', 'atrasado'])) & (df_abt['D_Date'].notna())].copy()
 
+
 # 1. Identificar as linhas com datas inconsistentes
 indices_ruins = df_abt[df_abt['D_Date'] < df_abt['Order_Date']].index
 
@@ -161,7 +162,7 @@ else:
     # Flag de Atraso (KPI): 1 se atrasou, 0 se chegou no dia ou antes
     df_entregues['is_late'] = (df_entregues['delivery_delay_days'] > 0).astype(int)
     
-    print(f"{len(df_entregues)} pedidos foram considerados 'entregues' para análise logística.")
+    print(f"\n{len(df_entregues)} pedidos foram considerados 'entregues' para análise logística.")
 
 # %%
 
@@ -180,6 +181,16 @@ df_abt['freight_share'] = np.where(
     0
 )
 
+freight_share_means = df_abt[['freight_share']].mean()
+formatted_freight_share = freight_share_means.map('{:.2%}'.format)
+
+print("Qtd pedidos confirmados:", df_abt['is_confirmed'].sum())
+print("\nQtd pedidos cancelados:", df_abt['is_canceled'].sum())
+print("\nTake-rate de frete:", formatted_freight_share['freight_share'])
+
+print("\n--- KPIs de Negócio e Financeiros Calculados ---")
+
+# %%
 # % de Desconto
 df_abt['discount_perc'] = np.where(
     df_abt['Subtotal'] > 0,
@@ -187,27 +198,15 @@ df_abt['discount_perc'] = np.where(
     0
 )
 
-freight_share_means = df_abt[['freight_share']].mean()
-formatted_freight_share = freight_share_means.map('{:.2%}'.format)
-
-print("Take-rate de frete:", formatted_freight_share['freight_share'])
-
-print("\n--- KPIs de Negócio e Financeiros Calculados ---")
-
-# %%
 df_elasticity['discount_perc'] = df_elasticity['Discount']
 
 # Limpar o status de compra (padrão da Fase 2.1)
 df_elasticity['Purchase_Status'] = df_elasticity['Purchase_Status'].astype(str).str.lower().str.strip()
 
-
-# --- 3. Binning (Agrupamento) do Desconto ---
-
 # Filtra apenas por vendas confirmadas
 df_analise = df_elasticity[df_elasticity['Purchase_Status'] == 'confirmado'].copy()
 
 # Definir as faixas de desconto
-# (Ajuste os 'bins' se seus descontos forem diferentes)
 bins = [-0.01, 0, 0.05, 0.1, 0.15, 0.2, 1] 
 labels = ['0% (Sem Desconto)', '0.1% a 5%', '5.1% a 10%', '10.1% a 15%', '15.1% a 20%', '> 20%']
 
@@ -216,29 +215,24 @@ df_analise['faixa_desconto'] = pd.cut(
     df_analise['discount_perc'], 
     bins=bins, 
     labels=labels,
-    right=True # Inclui o valor mais alto (ex: 5% cai em '0.1% a 5%')
+    right=True
 )
 
-# Tratar casos que não caíram em nenhuma faixa (se houver)
 df_analise = df_analise.dropna(subset=['faixa_desconto'])
 
-
-# --- 4. Calcular o KPI ---
-# Agrupamos pela faixa de desconto e calculamos a QUANTIDADE MÉDIA vendida
 kpi_elasticidade = df_analise.groupby('faixa_desconto', observed=True)['Quantity'].mean().reset_index()
 
 print("KPI: Quantidade Média Vendida por Faixa de Desconto")
 print(kpi_elasticidade)
 
 # %%
-
-# 3. Atributos de Sazonalidade (Agrupamento)
+# Atributos de Sazonalidade (Agrupamento)
 df_abt['order_month_year'] = df_abt['Order_Date'].dt.to_period('M') # Para séries temporais
 df_abt['order_weekday'] = df_abt['Order_Date'].dt.day_name()      # Para análise de dia da semana
 
 
 # %%
-# 1. Identificar outliers para o Ticket Médio (Total)
+# Identificar outliers para o Ticket Médio (Total)
 data_ticket = df_abt[df_abt['is_confirmed'] == 1]['Total']
 
 Q1_ticket = data_ticket.quantile(0.25)
@@ -247,7 +241,7 @@ IQR_ticket = Q3_ticket - Q1_ticket
 limite_sup_ticket = Q3_ticket + (1.5 * IQR_ticket)
 limite_inf_ticket = Q1_ticket - (1.5 * IQR_ticket)
 
-# 2. Quantificar os outliers
+## Quantificar os outliers
 outliers_ticket = data_ticket[
     (data_ticket > limite_sup_ticket) | (data_ticket < limite_inf_ticket)
 ]
@@ -258,7 +252,7 @@ print(f"Limite Inferior (IQR): R$ {limite_inf_ticket:,.2f}")
 print(f"Total de Pedidos Confirmados: {len(data_ticket)}")
 print(f"Pedidos considerados outliers: {len(outliers_ticket)} ({len(outliers_ticket) / len(data_ticket):.2%})")
 
-# 3. Identificar outliers para o Prazo de Entrega (Lead Time)
+# Identificar outliers para o Prazo de Entrega (Lead Time)
 data_prazo = df_entregues['delivery_lead_time_days']
 
 Q1_prazo = data_prazo.quantile(0.25)
@@ -267,7 +261,7 @@ IQR_prazo = Q3_prazo - Q1_prazo
 limite_sup_prazo = Q3_prazo + (1.5 * IQR_prazo)
 limite_inf_prazo = Q1_prazo - (1.5 * IQR_prazo)
 
-# 4. Quantificar os outliers
+# Quantificar os outliers
 outliers_prazo = data_prazo[
     (data_prazo > limite_sup_prazo) | (data_prazo < limite_inf_prazo)
 ]
@@ -281,6 +275,7 @@ print(f"Entregas consideradas outliers: {len(outliers_prazo)} ({len(outliers_pra
 
 # %%
 # Médias de Prazo de Entrega por Serviço
+
 print(f"{df_entregues[df_entregues['Service'] == 'standard']['delivery_lead_time_days'].mean():.2f}")
 print(f"{df_entregues[df_entregues['Service'] == 'same-day']['delivery_lead_time_days'].mean():.2f}")
 print(f"{df_entregues[df_entregues['Service'] == 'scheduled']['delivery_lead_time_days'].mean():.2f}")
@@ -336,16 +331,15 @@ print(f"Limite Inferior (IQR): {limite_inf_prazo:.2f} dias")
 print(f"Total de Pedidos Entregues: {len(data_prazo)}")
 print(f"Entregas consideradas outliers: {len(outliers_prazo)} ({len(outliers_prazo) / len(data_prazo):.2%})")
 
-print("--- Feature Engineering Concluída ---")
+print("\n--- Feature Engineering Concluída ---")
 
 # %%
+# 1. Análise Univariada (Distribuição dos KPIs)
+
 print("\n--- Iniciando Análise Exploratória ---")
 sns.set_style("whitegrid")
 
 # %%
-
-# 1. Análise Univariada (Distribuição dos KPIs)
-
 # Histograma do Ticket Médio (Total)
 plt.figure(figsize=(10, 5))
 sns.histplot(df_abt[df_abt['is_confirmed']==1]['Total'], kde=True, bins=50)
@@ -357,7 +351,6 @@ plt.show()
 
 
 # %%
-
 # Histograma do Prazo de Entrega (Lead Time)
 if not df_entregues.empty:
     plt.figure(figsize=(12, 5))
@@ -372,7 +365,6 @@ if not df_entregues.empty:
 
 
 # %%
-
 # Histograma do Atraso
 if not df_entregues.empty:
     plt.figure(figsize=(12, 5))
@@ -385,10 +377,10 @@ if not df_entregues.empty:
 
 
 # %%
-
 # 2. Análise de Sazonalidade (Séries Temporais)
 
 # Receita (Total) ao longo do tempo
+
 receita_mensal = df_abt[df_abt['is_confirmed']==1].groupby('order_month_year')['Total'].sum().reset_index()
 receita_mensal['order_month_year_str'] = receita_mensal['order_month_year'].astype(str)
 
@@ -398,11 +390,8 @@ plt.title('Receita Mensal (Pedidos Confirmados)')
 plt.xlabel('Quinzena')
 plt.ylabel('Receita Total (R$)')
 plt.show()
-# 
-
 
 # %%
-
 # 3. Análise de KPIs de Logística (Por Segmento)
 
 # Taxa de Atraso por Serviço (Service)
@@ -440,7 +429,6 @@ if not df_entregues.empty:
 
 
 # %%
-
 # Taxa de Atraso por Região (Region)
 
 if not df_entregues.empty:
@@ -483,7 +471,10 @@ if not df_entregues.empty:
 
 # Status de Pagamento por Método
 plt.figure(figsize=(12, 6))
+
+
 sns.countplot(data=df_abt, x='Payment_Method', hue='Purchase_Status')
+
 plt.title('Contagem de Status de Pedido por Método de Pagamento')
 plt.ylabel('Contagem de Pedidos')
 plt.xlabel('Método de Pagamento')
@@ -552,7 +543,7 @@ for p in ax.patches:
         fontweight='bold'
     )
 
-plt.title('KPI: Quantidade Média Vendida por Faixa de Desconto')
+plt.title('Quantidade Média Vendida por Faixa de Desconto')
 plt.xlabel('Faixa de Desconto (%)')
 plt.ylabel('Quantidade Média por Item Vendido')
 plt.xticks(rotation=45, ha='right')
