@@ -91,3 +91,14 @@ Foram calculados Intervalos de Confiança (IC) de 95% para as principais métric
 * **IC 95% para Ticket Médio:** O ticket médio real da população de pedidos está, com 95% de confiança, entre **R$ 2.347,36** e **R$ 2.943,49**.
 
 * **IC 95% para Proporção de Atraso:** A proporção real de pedidos atrasados está, com 95% de confiança, entre **81.55%** e **86.54%**.
+
+## Gráficos 
+![Distribuição do Ticket Médio (Pedidos Confirmados)](image.png)
+![Distribuição do Prazo de Entrega (em dias)](image-1.png)
+![Distribuição do Atraso (dias)](image-2.png)
+![Receita Mensal (Pedidos Confirmados)](image-3.png)
+![Taxa Média de Atraso por Tipo de Serviço](image-4.png)
+![Taxa Média de Atraso por Região](image-5.png)
+![Contagem de Status de Pedido por Método de Pagamento](image-6.png)
+![Taxa de Cancelamento por Método de Pagamento](image-7.png)
+![Quantidade Média Vendida por Faixa de Desconto](image-8.png)
