@@ -2,7 +2,7 @@
 
 ## Sumário Executivo
 
-O presente relatório visa fornecer à direção do e-commerce brasileiro uma análise estatística robusta sobre o desempenho operacional e financeiro. A análise exploratória e inferencial revelou achados acionáveis cruciais para a otimização de processos e aumento da rentabilidade.
+O presente relatório visa fornecer uma análise estatística robusta sobre o desempenho operacional e financeiro de um determinado e-commerce. A análise exploratória e inferencial revelou achados acionáveis cruciais para a otimização de processos e aumento da rentabilidade.
 
 ## Achados Acionáveis Chave:
 
